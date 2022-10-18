@@ -1,8 +1,8 @@
 require('dotenv').config()
 const { Sequelize } = require('sequelize');
-const username = process.env.DB_USERNAME
-const password = process.env.DB_PASSWORD
-const database = process.env.DATABASE
+const username = process.env.DB_USERNAME;
+const password = process.env.DB_PASSWORD;
+const database = process.env.DATABASE;
 const db = new Sequelize(
   {
     dialect: "mysql",
