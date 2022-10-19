@@ -13,3 +13,4 @@ mettre votre base de données
 npx sequelize db:migrate
 nodemon server
   
+ 
