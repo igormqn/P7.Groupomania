@@ -39,44 +39,44 @@
 
 <style>
     @font-face {
-        font-family: 'Gerbera';
-        src: url('assets/fonts/Gerbera.eot');
-        src: local('Gerbera'), local('Gerbera'),
-            url('assets/fonts/Gerbera.eot?#iefix') format('embedded-opentype'),
-            url('assets/fonts/Gerbera.woff2') format('woff2'),
-            url('assets/fonts/Gerbera.woff') format('woff'),
-            url('assets/fonts/Gerbera.ttf') format('truetype');
+        font-family: 'Lato';
+        src: url('assets/fonts/Lato-Regular.eot');
+        src: local('Lato'), local('Lato'),
+            url('assets/fonts/Lato-Regular.eot?#iefix') format('embedded-opentype'),
+            url('assets/fonts/Lato-Regular.woff2') format('woff2'),
+            url('assets/fonts/Lato-Regular.woff') format('woff'),
+            url('assets/fonts/Lato-Regular.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
 
     @font-face {
-        font-family: 'Gerbera';
-        src: url('assets/fonts/Gerbera-Light.eot');
-        src: local('Gerbera Light'), local('Gerbera-Light'),
-            url('assets/fonts/Gerbera-Light.eot?#iefix') format('embedded-opentype'),
-            url('assets/fonts/Gerbera-Light.woff2') format('woff2'),
-            url('assets/fonts/Gerbera-Light.woff') format('woff'),
-            url('assets/fonts/Gerbera-Light.ttf') format('truetype');
+        font-family: 'Lato';
+        src: url('assets/fonts/Lato-Light.eot');
+        src: local('Lato-Light'), local('Lato-Light'),
+            url('assets/fonts/Lato-Light.eot?#iefix') format('embedded-opentype'),
+            url('assets/fonts/Lato-Light.woff2') format('woff2'),
+            url('assets/fonts/Lato-Light.woff') format('woff'),
+            url('assets/fonts/Lato-Light.ttf') format('truetype');
         font-weight: 300;
         font-style: normal;
     }
 
     @font-face {
-        font-family: 'Gerbera';
-        src: url('assets/fonts/Gerbera-Bold.eot');
-        src: local('Gerbera Bold'), local('Gerbera-Bold'),
-            url('assets/fonts/Gerbera-Bold.eot?#iefix') format('embedded-opentype'),
-            url('assets/fonts/Gerbera-Bold.woff2') format('woff2'),
-            url('assets/fonts/Gerbera-Bold.woff') format('woff'),
-            url('assets/fonts/Gerbera-Bold.ttf') format('truetype');
+        font-family: 'Lato';
+        src: url('assets/fonts/Lato-Bold.eot');
+        src: local('Lato Bold'), local('Lato-Bold'),
+            url('assets/fonts/Lato-Bold.eot?#iefix') format('embedded-opentype'),
+            url('assets/fonts/Lato-Bold.woff2') format('woff2'),
+            url('assets/fonts/Lato-Bold.woff') format('woff'),
+            url('assets/fonts/Lato-Bold.ttf') format('truetype');
         font-weight: bold;
         font-style: normal;
     }
 
     body {
         padding-top: 80px;
-        font-family: 'Gerbera', sans-serif !important;
+        font-family: 'Lato', sans-serif !important;
     }
 
     #app {

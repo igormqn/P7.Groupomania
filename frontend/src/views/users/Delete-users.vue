@@ -1,6 +1,6 @@
 <template>
     <div class="card-groupomania">
-        <h1><b-icon-trash-fill></b-icon-trash-fill> Delete the accoubnt</h1>
+        <h1><b-icon-trash-fill></b-icon-trash-fill> Delete the account</h1>
         <p>Do you really want ? This action is not reversible...</p>
         <b-button variant="danger" @click="deleteUser()"><b-icon-trash-fill></b-icon-trash-fill> Delete</b-button>
     </div>
