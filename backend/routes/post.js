@@ -4,6 +4,8 @@ const router = express.Router();
 const postController = require('../controllers/post.controller');
 const commentController = require('../controllers/comment.controller');
 
+const likeController = require('../controllers/like.controller');
+
 const auth = require('../middlewares/auth.middleware');
 const multer = require('../middlewares/multer-config');
 
@@ -23,6 +25,8 @@ router.put('/:postId/comments/:id', auth, commentController.modifyComment);
 router.delete('/:postId/comments/:id', auth, commentController.deleteComment);
 router.delete('/admin/:postId/comments/:id', auth, commentController.deleteCommentByAdmin);
 
-// Routes pour les kikes
-
+// Routes pour les likes
+router.post('/:postId/like', auth, likeController.likePost);
+router.get('/:postId/likes', auth, likeController.getAllLikesPost);
+router.delete('/:postId/unlike', auth, likeController.unlikePost);
 module.exports = router;

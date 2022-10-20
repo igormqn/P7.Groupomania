@@ -31,7 +31,9 @@
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
                     <b-button variant="secondary"><b-icon-eye-fill></b-icon-eye-fill> Learn more</b-button>
                 </router-link>
-                <Likes :postId="post.id" :userId="userId" />
+                <router-link v-if="!liked" :to="{ name: 'Likes', params: { id: post.id }}">
+                    <b-button v-if="!liked" @click="likePost(postId)" class="btn" variant="danger"><b-icon-heart></b-icon-heart> Like </b-button>
+                </router-link>
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
                     <b-button variant="primary"><b-icon-chat-dots-fill></b-icon-chat-dots-fill> Comment</b-button>
                 </router-link>
