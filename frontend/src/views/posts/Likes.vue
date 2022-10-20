@@ -1,12 +1,7 @@
 <template>
-    <button v-if="!liked" @click="likePost(postId)" class="btn">
-        <i class="far fa-thumbs-up likeBtn like"></i>
-        {{likes.length}}
-    </button>
-    <button v-else @click="unlikePost(postId)" class="btn">
-        <i class="far fa-thumbs-up likeBtn liked"></i>
-        {{likes.length}}
-    </button>
+      <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
+                    <b-button variant="danger"><b-icon-heart></b-icon-heart> Like</b-button>
+                </router-link>
 </template>
 
 <script>

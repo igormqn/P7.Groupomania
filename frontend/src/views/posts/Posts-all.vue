@@ -1,4 +1,6 @@
+
 <template>
+
     <div class="users-posts">
         <div class="user-post" v-for="(post, index) in posts" :key="post.id">
             <div class="user" v-if="post.User">
@@ -29,6 +31,7 @@
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
                     <b-button variant="secondary"><b-icon-eye-fill></b-icon-eye-fill> Learn more</b-button>
                 </router-link>
+                <Likes :postId="post.id" :userId="userId" />
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
                     <b-button variant="primary"><b-icon-chat-dots-fill></b-icon-chat-dots-fill> Comment</b-button>
                 </router-link>
@@ -39,12 +42,13 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
-    import { mapGetters } from 'vuex'
+  import Likes from "./Likes.vue"
+  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
 
     export default {
         name: 'Posts-all',
-
+        components: Likes,
         mounted: function() {
             this.$store.dispatch('getAllPosts');
         },
@@ -60,6 +64,7 @@
 
         }
     }
+      
 </script>
 
 <style>

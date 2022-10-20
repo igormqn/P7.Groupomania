@@ -23,4 +23,6 @@ router.put('/:postId/comments/:id', auth, commentController.modifyComment);
 router.delete('/:postId/comments/:id', auth, commentController.deleteComment);
 router.delete('/admin/:postId/comments/:id', auth, commentController.deleteCommentByAdmin);
 
+// Routes pour les kikes
+
 module.exports = router;
