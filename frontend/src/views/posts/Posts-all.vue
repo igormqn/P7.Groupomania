@@ -1,6 +1,4 @@
-
 <template>
-
     <div class="users-posts">
         <div class="user-post" v-for="(post, index) in posts" :key="post.id">
             <div class="user" v-if="post.User">
@@ -29,28 +27,29 @@
             </div>
             <div class="comment">
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
-                    <b-button variant="secondary"><b-icon-eye-fill></b-icon-eye-fill> Learn more</b-button>
-                </router-link>
-                <router-link v-if="!liked" :to="{ name: 'Likes', params: { id: post.id }}">
-                    <b-button v-if="!liked" @click="likePost(postId)" class="btn" variant="danger"><b-icon-heart></b-icon-heart> Like </b-button>
+                    <b-button variant="secondary"><b-icon-eye-fill></b-icon-eye-fill> Lire plus</b-button>
                 </router-link>
                 <router-link v-if="post.id" :to="{ name: 'singlePost', params: { id: post.id }}">
-                    <b-button variant="primary"><b-icon-chat-dots-fill></b-icon-chat-dots-fill> Comment</b-button>
+                    <b-button variant="primary"><b-icon-chat-dots-fill></b-icon-chat-dots-fill> Commenter</b-button>
                 </router-link>
             </div>
+            <div id="likebtn">
+    <h1>{{message}}</h1>
+    <button @click="updateLike">Like(s) {{ count }}</button>
+  </div>
         </div>
-    </div>
+   
+</div>
     
 </template>
 
 <script>
-  import Likes from "./Likes.vue"
-  import { mapState } from 'vuex'
-  import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'Posts-all',
-        components: Likes,
+
         mounted: function() {
             this.$store.dispatch('getAllPosts');
         },
@@ -64,9 +63,21 @@
                 contentExcerpt: 'contentExcerpt'
             }),
 
-        }
+        },
+        data() {
+    return {
+      message: 'Likes',
+      count: 0,
+    };
+  },
+  methods: {
+    updateLike() {
+      if (this.count === 0) this.count = 1;
+      else this.count = 0;
     }
-      
+  }
+};
+    
 </script>
 
 <style>
@@ -163,4 +174,23 @@
         display: flex;
         justify-content: space-between;
     }
+    #likebtn {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+a,
+button {
+  color: #4fc08d;
+}
+
+button {
+  background: none;
+  border: solid 1px;
+  border-radius: 2em;
+  font: inherit;
+  padding: 0.75em 2em;
+}
 </style>

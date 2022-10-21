@@ -42,8 +42,8 @@
                     :class="{ 'is-invalid' : $v.content.$error, 'is-valid' : !$v.content.$invalid }"
                     ></b-form-textarea>
 
-                    <b-form-invalid-feedback>Comment is required</b-form-invalid-feedback>
-                    <b-form-valid-feedback>Comment is valid</b-form-valid-feedback>
+                    <b-form-invalid-feedback>Le commentaire est requis</b-form-invalid-feedback>
+                    <b-form-valid-feedback>Le commentaire est valide</b-form-valid-feedback>
                 </b-form-group>
                 <b-button type="submit" variant="primary" :class="{ 'disabled' : invalidateFields }"><b-icon-chat-dots-fill></b-icon-chat-dots-fill> Envoyer</b-button>
             </b-form>
@@ -82,8 +82,8 @@
         </div>
     </div>
     <div v-else class="card-groupomania">
-        <h1><b-icon-exclamation-triangle></b-icon-exclamation-triangle> No post found</h1>
-        <p>It seem that the post that you look for does not exist || don't worry go back in the homepage to see your previous posts</p>
+        <h1><b-icon-exclamation-triangle></b-icon-exclamation-triangle> Aucun post trouvé</h1>
+        <p>Il semble que le post que vous voulez afficher n'existe pas. Pas de panique !!! Retrouvez la liste des posts en retournant sur la page d'accueil.</p>
         <router-link :to="{ name: 'allPosts' }">
             <b-button variant="primary"><b-icon-house-door-fill></b-icon-house-door-fill>  Accueil</b-button>
         </router-link>
