@@ -1,25 +1,31 @@
 'use strict';
-const {	Model } = require('sequelize');
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class Like extends Model {
-		static associate(models) {
-			/* nos associations pour le model Like */
-			Like.belongsTo(models.User, {
-				onDelete: 'cascade',
-				foreignKey: { name: 'userId', allowNull: false },
-				hooks: true });
-			Like.belongsTo(models.Post, {
-				onDelete: 'cascade',
-				foreignKey: { name: 'postId', allowNull: false },
-				hooks: true });
-		}
-	};
-	Like.init({
-		/* Like est un booléan */
-		like: DataTypes.BOOLEAN
-	}, {
-		sequelize,
-		modelName: 'Like',
-	});
-	return Like;
+  class Like extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      models.Like.belongsTo(models.Post, {
+        foreignKey: 'postId'
+      })
+      models.Like.belongsTo(models.User, {
+        foreignKey: 'userId'
+      })
+    }
+  };
+  Like.init({
+	like: DataTypes.BOOLEAN,
+    postId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Like',
+  });
+  return Like;
 };

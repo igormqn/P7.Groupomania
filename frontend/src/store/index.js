@@ -41,7 +41,8 @@ export default new Vuex.Store({
         posts: [],
         post: {},
         comments: [],
-        comment: {}
+        comment: {},
+        like: []
     },
 
     getters: {
@@ -138,7 +139,12 @@ export default new Vuex.Store({
         SET_POST_CONTENT: function(state, modifiedPostContent) {
             state.post.content = modifiedPostContent;
         },
-
+        LIKE_LIST: function(state, like) {
+            state.like = like;
+        },
+        CREATE_LIKE: function(state, newLike) {
+            state.comment = newLike
+        },
         COMMENTS_LIST: function(state, comments) {
             state.comments = comments;
         },
@@ -331,6 +337,32 @@ export default new Vuex.Store({
                         })
                 });
             }
+        },
+        //liker un post
+        likePost({ commit }, { postId, id }) {
+            return new Promise((resolve, reject) => {
+                instance.get(`posts/${postId}/like/${id}`)
+                    .then(function(response) {
+                        commit('SINGLE_LIKE', response.data);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    })
+            });
+        },
+
+        getAllLike({ commit }, id) {
+            return new Promise((resolve, reject) => {
+                instance.get(`posts/${id}/like`)
+                    .then(function(response) {
+                        commit('LIKE_LIST', response.data);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    });
+            });
         },
 
         // Afficher tous les commentaires

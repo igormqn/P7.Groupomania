@@ -12,7 +12,6 @@ import DeleteComment from './views/comments/Delete-comments'
 import AllUsers from './views/admin/Users-admin'
 import AdminModifyUser from './views/admin/Modify-admin'
 import AdminDeleteUser from './views/admin/Delete-admin'
-import Likes from './views/posts/Likes'
 import NotFound from './views/404-error'
 
 export default [
@@ -35,7 +34,7 @@ export default [
 
     // Likes routes
 
-    { path: '/post/:postId/like', name: 'Likes', component: Likes },
+ 
     // Admin routes
     { path: '/admin/users', name: 'allUsers', component: AllUsers },
     { path: '/admin/modify-user/:id', name: 'adminModifyUser', component: AdminModifyUser },

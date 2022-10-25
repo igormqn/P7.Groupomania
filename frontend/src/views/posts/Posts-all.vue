@@ -35,20 +35,24 @@
             </div>
             <div id="likebtn">
     <h1>{{message}}</h1>
-    <button @click="updateLike">Like(s) {{ count }}</button>
+    <button v-if="!liked"  @click="likePost(postId)">Like(s) {{ count }}</button>
+    <button v-else @click="unlikePost(postId)">Like(s) {{ count }}</button>
   </div>
-        </div>
-   
 </div>
-    
+</div> 
 </template>
 
 <script>
-    import { mapState } from 'vuex'
-    import { mapGetters } from 'vuex'
 
+import { mapState } from 'vuex';
+    import { mapGetters } from 'vuex'
+  
     export default {
-        name: 'Posts-all',
+        name: 'Posts-all', 
+        props: {
+            postId: Number,
+            userId: Number
+        },
 
         mounted: function() {
             this.$store.dispatch('getAllPosts');
@@ -64,20 +68,76 @@
             }),
 
         },
+       
         data() {
     return {
       message: 'Likes',
-      count: 0,
+      likes:[],
+      liked: null,
+      count: 0
     };
   },
   methods: {
-    updateLike() {
-      if (this.count === 0) this.count = 1;
-      else this.count = 0;
+   // updateLike() { 
+     //   axios.get(`http://localhost:3000/api/posts/like`)
+   //   if (this.count === 0) this.count = 1;
+   //   else this.count = 0;
+   // },
+   // likePost() { 
+        //axios.get(`http://localhost:3000/api/posts/like`)
+        //.then(res => {
+         //   console.log(res);
+       //     this.posts = res.data;
+     //   })
+    //    .catch (function(err) { console.log(err)});
+   // }  
+  },
+  async fetch(postId) {
+    const fetchLikes = await fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/likes`)
+    const data = await fetchLikes.json()
+    data.forEach(like => {
+        like.userId == this.userId ? this.liked = true : this.like = false
+    })
+    return data
+  },
+  likePost(postId) {
+    const likeData = {
+        like: true,
+        userId: this.userId,
+        postId: postId
     }
-  }
+    fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(likeData)
+            })
+            .then(res => res.json())
+            .then(likeData => this.likes.push(likeData))
+            .catch(error => console.log(error))
+            this.liked = true
+  },
+  unlikePost(postId) {
+    const unlikeData = {
+        userId: this.userId
+    }
+    fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/unlike`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(unlikeData)
+            })
+            this.likes = this.likes.filter((like) => like.userId != this.userId) // <- pour unliker le post côté front
+            this.liked = false
+  },
+  async created() {
+        this.likes = await this.fetchLikes(this.postId)
+    }
 };
-    
+
+
 </script>
 
 <style>
@@ -193,4 +253,10 @@ button {
   font: inherit;
   padding: 0.75em 2em;
 }
+
+#like_button {
+  height: 29px;
+  width: 39px;
+}
+
 </style>
