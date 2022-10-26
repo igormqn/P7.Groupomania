@@ -9,7 +9,7 @@
                 </div>
                 <div v-if="hasPostRole || isAdmin" class="user-actions">
                     <router-link
-                        v-if="hasPostRole && post.id"
+                        v-if="(hasPostRole || isAdmin) && post.id"
                         :to="{ name: 'modifyPost',
                         params: { id: post.id }}"
                     >

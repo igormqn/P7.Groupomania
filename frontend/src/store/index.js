@@ -209,15 +209,15 @@ export default new Vuex.Store({
             });
         },
 
-        // Se déconnecter
+        // Logout
         logout({ commit }) {
             commit('LOG_OUT');
             commit('SET_STATUS', '');
-            // Supprimer l'utilisateur du local storage
+            // Delete user from localStrorage
             localStorage.removeItem('user');
         },
 
-        // Afficher les informations d'un user
+        // Display informations from user
         getUserInfos({ commit, state }) {
             return new Promise((resolve, reject) => {
                 instance.get(`auth/user/${state.user.userId}`)
@@ -231,7 +231,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Modifier le nom d'un utilisateur
+        // Change username
         editUserName({ state }, newUserName) {
             return new Promise((resolve, reject) => {
                 instance.put(`auth/user/${state.userInfos.id}`, newUserName)
@@ -244,7 +244,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Supprimer un utilisateur
+        // Delete user
         deleteUser({ state }) {
             return new Promise((resolve, reject) => {
                 instance.delete(`auth/user/${state.userInfos.id}`)
@@ -257,7 +257,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Créer un post
+        // Create a post
         createPost({ commit }, newPost) {
             return new Promise((resolve, reject) => {
                 instance.post('posts', newPost, {'Content-Type': 'application/form-data'})
@@ -271,7 +271,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Afficher tous les posts
+        // Display all posts
         getAllPosts({ commit }) {
             return new Promise((resolve, reject) => {
                 instance.get('posts')
@@ -285,7 +285,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Afficher un post
+        // Display posts
         getOnePost({ commit }, id) {
             return new Promise((resolve, reject) => {
                 instance.get(`posts/${id}`)
@@ -299,8 +299,19 @@ export default new Vuex.Store({
             });
         },
 
-        // Modifier un post
+        // Upgrade a post
         modifyPost({ state }, modifiedPost) {
+            if (state.userInfos.isAdmin) {
+                return new Promise((resolve, reject) => {
+                    instance.put(`posts/${state.post.id}`, { data: { userId: state.post.User.id } })
+                        .then(function(response) {
+                            resolve(response);
+                        })
+                        .catch(function(error) {
+                            reject(error);
+                        })
+                });
+            } else {
             return new Promise((resolve, reject) => {
                 instance.put(`posts/${state.post.id}`, modifiedPost, {'Content-Type': 'application/form-data'})
                     .then(function(response) {
@@ -310,11 +321,11 @@ export default new Vuex.Store({
                         reject(error);
                     });
             });
-        },
+        }},
 
-        // Supprimer un post
+        // Delete Post
         deletePost({ state }) {
-            // Si c'est l'admin, il peut supprimer n'importe quel post
+            // If he is admin he can delete any post
                 // Sinon l'utilisateur ne peut supprimer que son propre post
             if (state.userInfos.isAdmin) {
                 return new Promise((resolve, reject) => {
@@ -381,7 +392,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Afficher tous les commentaires
+        // Display all comment
         getAllComments({ commit }, id) {
             return new Promise((resolve, reject) => {
                 instance.get(`posts/${id}/comments`)
@@ -395,7 +406,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Afficher un commentaire
+        // Display one comment
         getOneComment({ commit }, { postId, id }) {
             return new Promise((resolve, reject) => {
                 instance.get(`posts/${postId}/comments/${id}`)
@@ -409,7 +420,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Créer un commentaire
+        // Create a comment
         createComment({ commit }, { id, newComment }) {
             return new Promise((resolve, reject) => {
                 instance.post(`posts/${id}/comments`, newComment)
@@ -423,7 +434,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Modifier un commentaire
+        // Change a comment
         editComment({ state }, modifiedComment) {
             return new Promise((resolve, reject) => {
                 instance.put(`posts/${state.comment.postId}/comments/${state.comment.id}`, modifiedComment)
@@ -437,10 +448,10 @@ export default new Vuex.Store({
             });
         },
 
-        // Supprimer un commentaire
+        // Delete comment
         deleteComment({ state }, { postId, id }) {
-            // Si c'est l'admin, il peut supprimer n'importe quel commentaire
-                // Sinon l'utilisateur ne peut supprimer que son propre commentaire
+            // If he is admin he can delete any comment
+                // Furthermore he can not delete his own comments
             if (state.userInfos.isAdmin) {
                 return new Promise((resolve, reject) => {
                     instance.delete(`posts/admin/${postId}/comments/${id}`)
@@ -464,7 +475,7 @@ export default new Vuex.Store({
             }
         },
 
-        // Afficher tous les utilisateurs par l'admin
+        // Display all user for admin
         getAllUsersByAdmin({ commit, state }) {
             return new Promise((resolve, reject) => {
                 instance.get(`auth/admin/users/${state.userInfos.id}`)
@@ -478,7 +489,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Afficher les informations d'un user par l'admin
+        // Display user info by admin
         getUserInfosByAdmin({ commit }, id) {
             return new Promise((resolve, reject) => {
                 instance.get(`auth/user/${id}`)
@@ -492,7 +503,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Modifier le rôle d'un utilisateur
+        // Change user roles
         editUserRole({ state }, newUserRole) {
             return new Promise((resolve, reject) => {
                 instance.put(`auth/admin/users/${state.userInfosByAdmin.id}`, newUserRole)
@@ -505,7 +516,7 @@ export default new Vuex.Store({
             });
         },
 
-        // Supprimer un utilisateur par l'admin
+        // Delete user for admin
         deleteUserByAdmin({ state }) {
             return new Promise((resolve, reject) => {
                 instance.delete(`auth/user/${state.userInfosByAdmin.id}`)

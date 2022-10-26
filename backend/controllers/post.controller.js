@@ -6,7 +6,7 @@ const fs = require('fs');
 
 dotenv.config();
 
-// Afficher tous les posts (plus récents)
+// Display all post
 exports.getAllPosts = (req, res) => {
     console.log('oui');
     Post.findAll({
@@ -20,7 +20,7 @@ exports.getAllPosts = (req, res) => {
             }]
         })
         .then(posts => res.status(200).json(posts))
-        .catch(error => res.status(400).json({ message: 'Impossible d\'afficher tous les posts', error }));
+        .catch(error => res.status(400).json({ message: 'Sorry,Can not display the post', error }));
 }
 
 // Afficher un post
@@ -36,7 +36,7 @@ exports.getOnePost = (req, res) => {
             }
         })
         .then(post => res.status(200).json(post))
-        .catch(error => res.status(400).json({ message: 'Impossible d\'afficher ce post', error }));
+        .catch(error => res.status(400).json({ message: 'Sorry,Can not display the post', error }));
 };
 
 // Ajouter un nouveau post
@@ -52,7 +52,7 @@ exports.createPost = (req, res) => {
     Post.create(post)
         .then(() => res.status(201).json({
             message: 'Post créé avec succès'}))
-        .catch(error => res.status(400).json({ message: 'Impossible de créer ce post', error }));
+        .catch(error => res.status(400).json({ message: 'Sorry,Can not display the post', error }));
 };
 
 // Modifier un post
@@ -75,8 +75,8 @@ exports.modifyPost = (req, res) => {
                 userId: userId
             }
         })
-        .then(() => res.status(200).json({ message: 'Post modifié avec succès' }))
-        .catch(error => res.status(400).json({ message: 'Impossible de modifier ce post', error }));
+        .then(() => res.status(200).json({ message: 'Success upgrading the post' }))
+        .catch(error => res.status(400).json({ message: 'Sorry, Can not display the post', error }));
 }
 
 // Supprimer un post par l'utilisateur
@@ -101,8 +101,8 @@ exports.deletePost = (req, res) => {
                                 userId: userId
                             }
                         })
-                        .then(() => res.status(200).json({ message: 'Post supprimé avec succès' }))
-                        .catch(error => res.status(400).json({ message: 'Impossible de supprimer ce post', error }));
+                        .then(() => res.status(200).json({ message: 'Post deleted with success' }))
+                        .catch(error => res.status(400).json({ message: 'Post deleted by mistakes', error }));
                 })
             } else {
                 Post.destroy({
@@ -112,9 +112,9 @@ exports.deletePost = (req, res) => {
                         }
                     })
                     .then(() => res.status(200).json({
-                        message: 'Post supprimé avec succès'
+                        message: 'Post deleted with success'
                     }))
-                    .catch(error => res.status(400).json({ message: 'Impossible de supprimer ce post', error }));
+                    .catch(error => res.status(400).json({ message: 'Can not deleted the post', error }));
             }
         })
         .catch(error => res.status(500).json({
@@ -122,7 +122,7 @@ exports.deletePost = (req, res) => {
         }))
 }
 
-// Supprimer un post par l'admin
+// Delete a post
 exports.deletePostByAdmin = (req, res) => {
     const id = req.params.id;
 
@@ -140,8 +140,8 @@ exports.deletePostByAdmin = (req, res) => {
                                 id: id
                             }
                         })
-                        .then(() => res.status(200).json({ message: 'Post supprimé avec succès' }))
-                        .catch(error => res.status(400).json({ message: 'Impossible de supprimer ce post', error }));
+                        .then(() => res.status(200).json({ message: 'Post Deleted' }))
+                        .catch(error => res.status(400).json({ message: 'Can not deleted the post', error }));
                 })
             } else {
                 Post.destroy({
@@ -149,8 +149,8 @@ exports.deletePostByAdmin = (req, res) => {
                             id: id
                         }
                     })
-                    .then(() => res.status(200).json({ message: 'Post supprimé avec succès' }))
-                    .catch(error => res.status(400).json({ message: 'Impossible de supprimer ce post', error }));
+                    .then(() => res.status(200).json({ message: 'Post Deleted with sucess' }))
+                    .catch(error => res.status(400).json({ message: 'Can not delete the post', error }));
             }
         })
         .catch(error => res.status(500).json({ error }));
