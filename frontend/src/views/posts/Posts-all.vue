@@ -1,6 +1,6 @@
 <template>
     <div class="users-posts">
-        <div class="user-post" v-for="(post, index) in posts" :key="post.id">
+        <div class="user-post" v-for="(post, index) in posts1" :key="post.id">
             <div class="user" v-if="post.User">
                 <div class="user-info">
                     <b-avatar></b-avatar>
@@ -35,8 +35,8 @@
             </div>
             <div id="likebtn">
     <h1>{{message}}</h1>
-    <button v-if="!liked"  @click="likePost(postId)">Like(s) {{ count }}</button>
-    <button v-else @click="unlikePost(postId)">Like(s) {{ count }}</button>
+    <button v-if="!post.liked"  @click="likePost(post.id)">Like(s) {{ post.Likes.length }}</button>
+    <button v-else @click="unlikePost(post.id)">unLike(s) {{ post.Likes.length }}</button>
   </div>
 </div>
 </div> 
@@ -46,7 +46,7 @@
 
 import { mapState } from 'vuex';
     import { mapGetters } from 'vuex'
-  
+
     export default {
         name: 'Posts-all', 
         props: {
@@ -55,17 +55,30 @@ import { mapState } from 'vuex';
         },
 
         mounted: function() {
+            this.$store.dispatch('getUserInfos');
             this.$store.dispatch('getAllPosts');
         },
 
         computed: {
             ...mapState({
-                posts: 'posts'
+                posts: 'posts',
+                userInfos: 'userInfos'
             }),
 
             ...mapGetters({
                 contentExcerpt: 'contentExcerpt'
             }),
+
+            posts1() {
+                const  posts = this.posts.map(post =>  {
+                    post.liked = post.Likes.filter(like => like.userId == this.userInfos.id).length > 0;
+                    return post;
+                });
+
+                // console.log("posts", this.userInfos.id, posts);
+
+                return posts;
+            }
 
         },
        
@@ -78,11 +91,25 @@ import { mapState } from 'vuex';
     };
   },
   methods: {
-   // updateLike() { 
-     //   axios.get(`http://localhost:3000/api/posts/like`)
-   //   if (this.count === 0) this.count = 1;
-   //   else this.count = 0;
-   // },
+    updateLike() { 
+
+      if (this.count === 0) this.count = 1;
+      else this.count = 0;
+   },
+   likePost(postid) {
+    console.log("userId",this.userInfos.id);
+    const self = this;
+this.$store.dispatch('likePost', {
+    like: true,
+postId: postid,
+userId: this.userInfos.id
+})
+.then(function() {
+    console.log("refetch after like");
+    self.$store.dispatch('getAllPosts');
+}, function(error) {
+console.log(error);
+});
    // likePost() { 
         //axios.get(`http://localhost:3000/api/posts/like`)
         //.then(res => {
@@ -92,49 +119,59 @@ import { mapState } from 'vuex';
     //    .catch (function(err) { console.log(err)});
    // }  
   },
-  async fetch(postId) {
-    const fetchLikes = await fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/likes`)
-    const data = await fetchLikes.json()
-    data.forEach(like => {
-        like.userId == this.userId ? this.liked = true : this.like = false
+
+ unlikePost(postid) {
+    console.log("unlikePost", this.userInfos.id);
+    const self = this;
+    this.$store.dispatch('unlikePost', {    
+    postId: postid,
+    userId: this.userInfos.id
     })
-    return data
+    .then(function() {
+        console.log("refetch after unlike");
+        self.$store.dispatch('getAllPosts');
+    }, function(error) {
+    console.log(error);
+    });
+
   },
-  likePost(postId) {
-    const likeData = {
-        like: true,
-        userId: this.userId,
-        postId: postId
-    }
-    fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/like`, {
+  async created() {
+        this.likes = await this.fetchLikes(this.postId)
+    },
+    async AddLike(id){
+        const likeData = {
+            like: true,
+            userId:this.userInfos.iid,
+            postId: id
+        }
+        fetch(`http://localhost:3000/api/posts/${id}/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(likeData)
             })
-            .then(res => res.json())
-            .then(likeData => this.likes.push(likeData))
-            .catch(error => console.log(error))
-            this.liked = true
-  },
-  unlikePost(postId) {
-    const unlikeData = {
-        userId: this.userId
-    }
-    fetch(`http://localhost:3000/api/posts/${JSON.stringify(postId)}/unlike`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(unlikeData)
-            })
-            this.likes = this.likes.filter((like) => like.userId != this.userId) // <- pour unliker le post côté front
-            this.liked = false
-  },
-  async created() {
-        this.likes = await this.fetchLikes(this.postId)
-    }
+       .then(response => {
+          console.log(response.data)
+          let like = response.data;
+          const post = this.posts.find(row => row.id == id)
+          if(like){
+            post.post_total_likes +=1
+          }else{
+            post.post_total_likes -=1
+          }
+
+           if (this.count === 0) this.count = 1;
+            else this.count = 0;
+             
+        })
+        .catch(error => {
+            console.log(error)
+        })
+      
+    
+},
+    },
 };
 
 

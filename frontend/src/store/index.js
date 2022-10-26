@@ -338,10 +338,26 @@ export default new Vuex.Store({
                 });
             }
         },
-        //liker un post
-        likePost({ commit }, { postId, id }) {
+        
+        likePost({ commit }, { postId, userId, like }) {
             return new Promise((resolve, reject) => {
-                instance.get(`posts/${postId}/like/${id}`)
+                // instance.get(`posts/${postId}/like/${id}`)
+                instance.post(`posts/${postId}/like`, { like, userId, postId })
+                    .then(function(response) {
+                        commit('SINGLE_LIKE', response.data);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    })
+            });
+        },
+
+        unlikePost({ commit }, { postId, userId }) {
+            console.log("unlikePost", postId, userId);
+            return new Promise((resolve, reject) => {
+                // instance.get(`posts/${postId}/like/${id}`)
+                instance.post(`posts/${postId}/unlike`, {  userId })
                     .then(function(response) {
                         commit('SINGLE_LIKE', response.data);
                         resolve(response);

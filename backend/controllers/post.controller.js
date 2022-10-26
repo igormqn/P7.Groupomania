@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const Post = require('../models').Post;
 const User = require('../models').User;
+const Like = require('../models').Like;
 const fs = require('fs');
 
 dotenv.config();
@@ -12,9 +13,11 @@ exports.getAllPosts = (req, res) => {
             order: [
                 [ 'updatedAt', 'DESC']
             ],
-            include: {
+            include: [{
                 model: User
-            }
+            }, {
+                model: Like
+            }]
         })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ message: 'Impossible d\'afficher tous les posts', error }));

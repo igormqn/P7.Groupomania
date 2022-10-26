@@ -24,7 +24,7 @@ exports.unlikePost = (req, res) => {
         Like.destroy({where: {postId: req.params.postId, userId: req.body.userId}})
             .then(like => {
                 console.log(like);
-                res.status(200);
+                res.status(200).json(req.body);
             })
             .catch(error => res.status(400).json(error))
     } catch {

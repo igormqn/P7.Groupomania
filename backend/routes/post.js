@@ -28,5 +28,5 @@ router.delete('/admin/:postId/comments/:id', auth, commentController.deleteComme
 // Routes pour les likes
 router.post('/:postId/like', auth, likeController.likePost);
 router.get('/:postId/likes', auth, likeController.getAllLikesPost);
-router.delete('/:postId/unlike', auth, likeController.unlikePost);
+router.post('/:postId/unlike', auth, likeController.unlikePost);
 module.exports = router;
